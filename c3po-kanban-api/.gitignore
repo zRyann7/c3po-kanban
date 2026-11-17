@@ -1,0 +1,17 @@
+# Ambiente virtual Python
+.venv/
+venv/
+env/
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Variáveis de ambiente e chaves sensíveis (NUNCA subir para o GitHub)
+.env
+*.json
+
+# Arquivos de sistema / IDE
+.DS_Store
+.vscode/

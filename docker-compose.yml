@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: ./c3po-kanban-api
+      dockerfile: Dockerfile
+    container_name: c3po-kanban-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./c3po-kanban-api/.env
+    volumes:
+      - ./c3po-kanban-api/firebase-key.json:/app/firebase-key.json:ro
+    restart: unless-stopped
