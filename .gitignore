@@ -1,18 +1,16 @@
-# Ambientes virtuais e dependências
-**/.venv/
-**/venv/
-**/node_modules/
-**/dist/
+﻿# Ambientes e dependências
+.venv/
+venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
 
-# Cache Python
-**/__pycache__/
-**/*.py[cod]
+# Variáveis de ambiente e chaves
+.env
+.env.*
+firebase-key.json
 
-# Segredos e credenciais (NUNCA subir para o GitHub)
-**/.env
-**/firebase-key.json
-**/*firebase-adminsdk*.json
-
-# Sistema e IDE
-.DS_Store
-.vscode/
+# Artefatos de build e deploy na Shard Cloud
+c3po-kanban-api/static/
+*.zip

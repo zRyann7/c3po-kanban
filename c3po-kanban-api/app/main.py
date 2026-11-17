@@ -1,6 +1,9 @@
 import os
+from pathlib import Path
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
@@ -38,7 +41,7 @@ class ChatRequest(BaseModel):
 async def get_authenticated_user_id(authorization: str) -> str:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Token Bearer ausente ou inválido.")
-    
+
     token = authorization.replace("Bearer ", "")
     try:
         decoded_token = firebase_auth.verify_id_token(token)
@@ -91,3 +94,19 @@ async def chat_with_c3po(
         "reply": final_response,
         "session_id": payload.session_id
     }
+
+
+# Serve o frontend React compilado (pasta static/ gerada pelo deploy-shard.ps1)
+STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+
+if STATIC_DIR.exists():
+    assets_dir = STATIC_DIR / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        file_path = STATIC_DIR / full_path
+        if full_path and file_path.is_file():
+            return FileResponse(file_path)
+        return FileResponse(STATIC_DIR / "index.html")
